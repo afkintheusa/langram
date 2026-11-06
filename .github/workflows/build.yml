@@ -1,0 +1,48 @@
+name: Build Langram (Windows)
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check project files
+        shell: pwsh
+        run: |
+          $ui = 'index.html','styles.css','app.js','panel.js','dialogs.js','guard.js','icons.js','emoji.js','wallpapers.js'
+          New-Item -ItemType Directory -Force renderer | Out-Null
+          foreach ($f in $ui) {
+            if (-not (Test-Path "renderer/$f") -and (Test-Path $f)) { Move-Item $f "renderer/$f"; Write-Host "Moved $f into renderer/" }
+          }
+          $need = @('main.js','net.js','store.js','preload.js','package.json','build/icon.png') + ($ui | ForEach-Object { "renderer/$_" })
+          $missing = $need | Where-Object { -not (Test-Path $_) }
+          if ($missing) { Write-Host "::error::Missing files in your GitHub repository: $($missing -join ', ')"; exit 1 }
+          Write-Host 'All project files present.'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Build installer + portable exe
+        run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Langram-Windows
+          path: |
+            dist/*.exe
+      - name: Publish release (only for tags like v1.0.0)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
