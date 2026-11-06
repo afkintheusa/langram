@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; img-src 'self' file: data: blob:; media-src 'self' file: blob:; style-src 'self' file: 'unsafe-inline'; script-src 'self' file:">
+<title>Langram</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="titlebar"><span class="tb-logo"></span><span>Langram</span><div class="sp1"></div><div class="wc"><button id="wMin" title="Minimize"></button><button id="wMax" title="Maximize"></button><button id="wClose" title="Close"></button></div></div>
+<div id="app">
+  <nav id="rail"></nav>
+  <aside id="side">
+    <div class="side-top"><div class="search"><span id="searchIc"></span><input id="q" placeholder="Search" autocomplete="off" spellcheck="false"></div></div>
+    <div id="list"></div>
+  </aside>
+  <main id="main">
+    <header id="head"></header>
+    <div id="player"></div>
+    <div id="stage">
+      <div id="wall"><div id="wallbg"></div><div id="wallpat"></div></div>
+      <div id="scroller"><div id="msgs"></div></div>
+      <button id="toBottom" class="hidden"></button>
+      <div id="drop" class="hidden"><div>Drop files to send</div></div>
+    </div>
+    <div id="bottom">
+      <div id="ctxbar" class="hidden"></div>
+      <div id="composer">
+        <div class="cbox">
+          <button class="ib" id="attachBtn" title="Attach"></button>
+          <textarea id="input" rows="1" placeholder="Write a message..." spellcheck="false"></textarea>
+          <button class="ib" id="emojiBtn" title="Emoji, stickers &amp; GIFs"></button>
+          <button class="ib act" id="actBtn"></button>
+        </div>
+        <div class="recbar">
+          <button class="ib" id="recCancel" title="Cancel"></button>
+          <i class="recdot"></i><span id="recTime">0:00</span>
+          <div class="reclv"><i id="recLevel"></i></div>
+          <button class="ib act" id="recSend" title="Send voice message"></button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <aside id="panel"></aside>
+</div>
+<div id="overlay"></div><div id="menu"></div><div id="toast"></div>
+<audio id="au" preload="auto"></audio>
+<script src="guard.js"></script>
+<script src="icons.js"></script>
+<script src="emoji.js"></script>
+<script src="wallpapers.js"></script>
+<script src="app.js"></script>
+<script src="panel.js"></script>
+<script src="dialogs.js"></script>
+</body>
+</html>
